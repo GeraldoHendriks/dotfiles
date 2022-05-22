@@ -1,2 +1,4 @@
 //@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
-@theme "/home/geraldo/.config/rofi/themes/slate.rasi"
+//@theme "/home/geraldo/.config/rofi/themes/slate.rasi"
+//@theme "/usr/share/rofi/themes/sidebar.rasi"
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"

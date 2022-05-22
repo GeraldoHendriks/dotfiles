@@ -24,11 +24,15 @@ keys = [
     Key([mod], "f", lazy.spawn("pcmanfm"), desc="Launch Pcmanfm"),
     Key([], "Print", lazy.spawn("flameshot gui"), desc="Launch Flameshot"),
 
+    # Custom floating toggle
+    Key([mod, "shift"], "p", lazy.window.toggle_floating()),
 
-    # Custom volume commands
+    # Custom media commands
     Key([], "XF86AudioMute", lazy.spawn("amixer sset Master playback toggle"), desc="Mute"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master playback 2%+"), desc="Volume up"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master playback 2%-"), desc="Volume dowm"),
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc="Play/Pause current playing media"),
+
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -76,34 +80,35 @@ keys = [
     Key(["mod4"], "l", lazy.spawn("xlock -mode space"), desc="Lock screen"),
 ]
 
-group_names = [("MAIN", {'layout': 'Columns'}),
-               ("WEB", {'layout': 'Columns'}),
-               ("DEV", {'layout': 'Columns'}),
-               ("CHAT", {'layout': 'Columns'}),
-               ("SYS", {'layout': 'Columns'}),
-               ("DOC", {'layout': 'Columns'}),
-               ("MUS", {'layout': 'Columns'}),
-               ("VID", {'layout': 'Columns'}),
-               ("OTHER", {'layout': 'Columns'})]
+group_names = [("I"),
+               ("II"),
+               ("III"),
+               ("IV"),
+               ("V"),
+               ("VI"),
+               ("VII"),
+               ("VIII"),
+               ("IX")]
 
-groups = [Group(name, **kwargs) for name, kwargs in group_names]
+groups = [Group(name) for name in group_names]
 
-for i, (name, kwargs) in enumerate(group_names, 1):
+for i, (name) in enumerate(group_names, 1):
     keys.append(Key([mod], str(i), lazy.group[name].toscreen()))        # Switch to another group
     keys.append(Key([mod, "shift"], str(i), lazy.window.togroup(name))) # Send current window to another group
 
-colors = [["#282c34", "#282c34"], # 0
-          ["#3d3f4b", "#3d3f4b"], # 1
-          ["#ffffff", "#ffffff"], # 2
-          ["#AEC3B0", "#AEC3B0"], # 3
-          ["#124559", "#124559"], # 4
-          ["#598392", "#598392"], # 5
+colors = [["#282828"], # 0 bg
+          ["#cc241d"], # 1 red
+          ["#98971a"], # 2 green
+          ["#d79921"], # 3 yellow
+          ["#928374"], # 4 grey
+          ["#ebdbb2"], # 5 fg
+          ["#504945"], # 6 bg2
           ]
 
 layout_theme = {"border_width": 2,
                 "margin": 15,
-                "border_focus": colors[5],
-                "border_normal": colors[1]
+                "border_focus": colors[4],
+                "border_normal": colors[6]
                 }
 
 
@@ -112,20 +117,22 @@ layouts = [
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
+    # layout.Bsp(**layout_theme),
     # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+    # layout.MonadTall(**layout_theme),
+    # layout.MonadWide(**layout_theme),
+    # layout.RatioTile(**layout_theme),
+    # layout.Tile(**layout_theme),
+    # layout.TreeTab(**layout_theme),
+    # layout.VerticalTile(**layout_theme),
+    # layout.Zoomy(**layout_theme),
 ]
 
 widget_defaults = dict( font='sans',
     fontsize=12,
     padding=3,
+    background=colors[0],
+    foreground=colors[5]
 )
 extension_defaults = widget_defaults.copy()
 
@@ -133,92 +140,59 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.CurrentLayoutIcon(
+                    scale=0.5,
+                ),
+                widget.WindowName(),
                 widget.GroupBox(
-                active = colors[2],
-                inactive = colors[1],
-                rounded = False,
-                highlight_color = colors[1],
-                highlight_method = "line",
-                this_current_screen_border = colors[4],
-                this_screen_border = colors [4],
-                other_current_screen_border = colors[4],
-                other_screen_border = colors[4],
-                foreground = colors[2],
-                background = colors[0]
+                    active = colors[5],
+                    inactive = colors[4],
+                    rounded = False,
+                    highlight_color = colors[6],
+                    highlight_method = "line",
+                    this_current_screen_border = colors[4],
+                    this_screen_border = colors [4],
+                    other_current_screen_border = colors[4],
+                    other_screen_border = colors[4],
+                ),
+                widget.Spacer(),
+                widget.WidgetBox(
+                    close_button_location="right",
+                    text_closed='[]',
+                    text_open=']',
+                    widgets=[
+                        widget.Systray(),
+                    ]
                 ),
                 widget.Spacer(
-                background=colors[0],
-                length=10
-                ),
-                widget.WindowName(
-                background=colors[0],
-                foreground=colors[3]
-                ),
-                widget.Prompt(
-                background=colors[0],
-                prompt="Run: ",
-                cursor=False
-                ),
-                widget.Spacer(
-                background=colors[0],
-                length=20
-                ),
-                widget.Notify(
-                background=colors[0]
-                ),
-                widget.Systray(
-                background=colors[0]
-                ),
-                widget.Spacer(
-                background=colors[0],
-                length=5
-                ),
-                widget.Spacer(
-                background=colors[0],
-                length=5
+                    length=5
                 ),
                 widget.TextBox(
-                background=colors[0],
-                text='Volume:'
+                    text='墳 '
                 ),
-                widget.Volume(
-                background=colors[0],
-                ),
+                widget.Volume(),
                 widget.Spacer(
-                background=colors[0],
-                length=5
-                ),
-                widget.Spacer(
-                background=colors[0],
-                length=5
+                    length=5,
                 ),
                 widget.TextBox(
-                background=colors[0],
-                text='Battery:'
+                    text='  '
                 ),
                 widget.Battery(
-                format='{percent:2.0%}  {char}',
-                background=colors[0]
+                    notify_below=89,
+                    format='{percent:2.0%}  {char}',
                 ),
                 widget.Spacer(
-                background=colors[0],
-                length=5
-                ),
-                widget.Spacer(
-                background=colors[0],
-                length=5
+                    length=5
                 ),
                 widget.Clock(
-                format='%m-%d %H:%M',
-                background=colors[0]
+                    format='%m-%d %H:%M',
                 ),
                 widget.Spacer(
-                background=colors[0],
-                length=5
+                    length=5
                 ),
             ],
-            24,
-            margin=[15, 15, 0, 15],
+            32,
+            # margin=[15, 15, 0, 15],
         ),
     ),
 ]
@@ -229,7 +203,7 @@ mouse = [
          start=lazy.window.get_position()),
     Drag([mod, "shift"], "Button1", lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
+    Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
