@@ -29,9 +29,13 @@ keys = [
 
     # Custom media commands
     Key([], "XF86AudioMute", lazy.spawn("amixer sset Master playback toggle"), desc="Mute"),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master playback 2%+"), desc="Volume up"),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master playback 2%-"), desc="Volume dowm"),
+    # Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master playback 2%+"), desc="Volume up"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer --increase 5"), desc="Volume up"),
+    # Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master playback 2%-"), desc="Volume dowm"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer --decrease 5"), desc="Volume up"),
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc="Play/Pause current playing media"),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc="Play next media"),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc="Pause next media"),
 
 
     # Switch between windows
@@ -80,15 +84,21 @@ keys = [
     Key(["mod4"], "l", lazy.spawn("xlock -mode space"), desc="Lock screen"),
 ]
 
+
+#############################################################
+# @hook.subscribe.startup_once                              #
+# def start_once():                                         #
+#     home = os.path.expanduser('~')                        #
+#     subprocess.call([home + '/.config/polybar/start.sh']) #
+#############################################################
+
+
 group_names = [("I"),
                ("II"),
                ("III"),
                ("IV"),
                ("V"),
-               ("VI"),
-               ("VII"),
-               ("VIII"),
-               ("IX")]
+               ("VI")]
 
 groups = [Group(name) for name in group_names]
 
@@ -96,13 +106,13 @@ for i, (name) in enumerate(group_names, 1):
     keys.append(Key([mod], str(i), lazy.group[name].toscreen()))        # Switch to another group
     keys.append(Key([mod, "shift"], str(i), lazy.window.togroup(name))) # Send current window to another group
 
-colors = [["#282828"], # 0 bg
-          ["#cc241d"], # 1 red
-          ["#98971a"], # 2 green
-          ["#d79921"], # 3 yellow
-          ["#928374"], # 4 grey
-          ["#ebdbb2"], # 5 fg
-          ["#504945"], # 6 bg2
+colors = ["#282828", # 0 bg
+          "#cc241d", # 1 red
+          "#98971a", # 2 green
+          "#d79921", # 3 yellow
+          "#928374", # 4 grey
+          "#ebdbb2", # 5 fg
+          "#504945", # 6 bg2
           ]
 
 layout_theme = {"border_width": 2,
@@ -138,62 +148,65 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        top=bar.Bar(
-            [
-                widget.CurrentLayoutIcon(
-                    scale=0.5,
-                ),
-                widget.WindowName(),
-                widget.GroupBox(
-                    active = colors[5],
-                    inactive = colors[4],
-                    rounded = False,
-                    highlight_color = colors[6],
-                    highlight_method = "line",
-                    this_current_screen_border = colors[4],
-                    this_screen_border = colors [4],
-                    other_current_screen_border = colors[4],
-                    other_screen_border = colors[4],
-                ),
-                widget.Spacer(),
-                widget.WidgetBox(
-                    close_button_location="right",
-                    text_closed='[]',
-                    text_open=']',
-                    widgets=[
-                        widget.Systray(),
-                    ]
-                ),
-                widget.Spacer(
-                    length=5
-                ),
-                widget.TextBox(
-                    text='墳 '
-                ),
-                widget.Volume(),
-                widget.Spacer(
-                    length=5,
-                ),
-                widget.TextBox(
-                    text='  '
-                ),
-                widget.Battery(
-                    notify_below=89,
-                    format='{percent:2.0%}  {char}',
-                ),
-                widget.Spacer(
-                    length=5
-                ),
-                widget.Clock(
-                    format='%m-%d %H:%M',
-                ),
-                widget.Spacer(
-                    length=5
-                ),
-            ],
-            32,
-            # margin=[15, 15, 0, 15],
-        ),
+    #     top=bar.Bar(
+    #         [
+    #             widget.CurrentLayoutIcon(
+    #                 scale=0.5,
+    #             ),
+    #             widget.WindowName(),
+    #             widget.GroupBox(
+    #                 fontsize= 16,
+    #                 active = colors[5],
+    #                 inactive = colors[4],
+    #                 rounded = False,
+    #                 highlight_color = colors[6],
+    #                 highlight_method = "line",
+    #                 this_current_screen_border = colors[4],
+    #                 this_screen_border = colors [4],
+    #                 other_current_screen_border = colors[4],
+    #                 other_screen_border = colors[4],
+    #             ),
+    #             widget.Spacer(),
+    #             widget.WidgetBox(
+    #                 font='FontAwesome',
+    #                 fontsize= 16,
+    #                 close_button_location="right",
+    #                 text_closed='',
+    #                 text_open='',
+    #                 widgets=[
+    #                     widget.Systray(),
+    #                 ]
+    #             ),
+    #             widget.Spacer(
+    #                 length=5
+    #             ),
+    #             widget.TextBox(
+    #                 fontsize= 16,
+    #                 text='墳 '
+    #             ),
+    #             widget.Volume(),
+    #             widget.Spacer(
+    #                 length=5,
+    #             ),
+    #             widget.TextBox(
+    #                 text='  '
+    #             ),
+    #             widget.Battery(
+    #                 format='{percent:2.0%}  {char}',
+    #             ),
+    #             widget.Spacer(
+    #                 length=5
+    #             ),
+    #             widget.Clock(
+    #                 format='%m-%d %H:%M',
+    #             ),
+    #             widget.Spacer(
+    #                 length=5
+    #             ),
+    #         ],
+    #         32,
+    #         # margin=[15, 15, 0, 15],
+    #     ),
     ),
 ]
 
