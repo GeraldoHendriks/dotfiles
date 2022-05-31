@@ -85,12 +85,10 @@ keys = [
 ]
 
 
-#############################################################
-# @hook.subscribe.startup_once                              #
-# def start_once():                                         #
-#     home = os.path.expanduser('~')                        #
-#     subprocess.call([home + '/.config/polybar/start.sh']) #
-#############################################################
+@hook.subscribe.startup_once
+def start_once():
+    home = os.path.expanduser('~')
+    subprocess.call([home + '/.config/polybar/launch.sh'])
 
 
 group_names = [("I"),
