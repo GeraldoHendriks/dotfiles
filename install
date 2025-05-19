@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Define colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to create symlink
+create_symlink() {
+    local source=$1
+    local target=$2
+    
+    # Create parent directory if it doesn't exist
+    mkdir -p "$(dirname "$target")"
+    
+    # Check if target already exists
+    if [ -e "$target" ]; then
+        if [ -L "$target" ]; then
+            echo -e "${RED}Symlink already exists at $target${NC}"
+        else
+            echo -e "${RED}File/directory already exists at $target${NC}"
+        fi
+        return 1
+    fi
+    
+    # Create symlink
+    ln -s "$source" "$target"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Created symlink: $target -> $source${NC}"
+    else
+        echo -e "${RED}Failed to create symlink: $target${NC}"
+    fi
+}
+
+# Get the script's directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Available configs
+declare -A configs=(
+    ["hypr"]="$HOME/.config/hypr"
+    ["mako"]="$HOME/.config/mako"
+    ["rofi"]="$HOME/.config/rofi"
+    ["waybar"]="$HOME/.config/waybar"
+)
+
+# Show usage if no arguments provided
+if [ $# -eq 0 ]; then
+    echo -e "${BLUE}Usage:${NC} $0 [config_names...]"
+    echo -e "\nAvailable configs:"
+    for config in "${!configs[@]}"; do
+        echo "  $config"
+    done
+    exit 1
+fi
+
+# Process arguments
+for config in "$@"; do
+    if [ -z "${configs[$config]}" ]; then
+        echo -e "${RED}Error: Unknown config '$config'${NC}"
+        continue
+    fi
+    create_symlink "$SCRIPT_DIR/$config" "${configs[$config]}"
+done
+
+echo -e "\n${GREEN}Installation complete!${NC}" 
