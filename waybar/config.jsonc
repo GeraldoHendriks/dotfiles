@@ -1,0 +1,116 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "margin-right": 10,
+  "margin-left": 10,
+  "margin-bottom": 10,
+  "height": 20,
+  "spacing": 0,
+  // "output": "eDP-1",
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  // "modules-center": [],
+  "modules-right": [
+    "pulseaudio",
+    "custom/oskb",
+    "network",
+    "backlight",
+    "battery",
+    "bluetooth",
+    "tray",
+    "clock"
+  ],
+  "hyprland/workspaces": {
+    "format": "{icon}"
+  },
+  "tray": {
+    "icon-size": 10,
+    "spacing": 10
+  },
+  "clock": {
+    "format": "{:%H:%M}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}",
+    "interval": 1
+  },
+  "backlight": {
+    "format": "<big>{icon}</big>",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "battery": {
+    "interval": 1,
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "<big>{icon}</big> {capacity}%",
+    "format-icons": {
+      "full": [
+        "󰁹"
+      ],
+      "charging": [
+        "󰂄"
+      ],
+      "discharging": [
+        "󰁺",
+        "󰁻",
+        "󰁼",
+        "󰁽",
+        "󰁾",
+        "󰁿",
+        "󰂀",
+        "󰂂"
+      ]
+    }
+  },
+  "network": {
+    "format-wifi": "<big>{icon}</big>   {essid}",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤭",
+    "interval": 1,
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "on-click": "kitty nmtui"
+  },
+  "pulseaudio": {
+    "format": "<big>{icon}</big> {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": {
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ]
+    },
+    "on-click": "pavucontrol"
+  },
+  "bluetooth": {
+    "format": "<big>{icon}</big>",
+    "format-on": "󰂯",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱",
+    "on-click": "kitty bluetuith"
+  },
+  "custom/oskb": {
+    "format": "󰥻 ",
+    "tooltip": "On-Screen Keyboard",
+    "on-click": "pgrep wvkbd && pkill wvkbd || (wvkbd-mobintl & disown)"
+  }
+}
